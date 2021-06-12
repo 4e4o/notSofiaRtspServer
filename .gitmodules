@@ -1,0 +1,7 @@
+[submodule "notSofiaLib"]
+	path = notSofiaLib
+	url = https://github.com/4e4o/notSofiaLib.git
+
+[submodule "3rdparty/ZLMediaKit"]
+	path = 3rdparty/ZLMediaKit
+	url = git@github.com:4e4o/ZLMediaKit.git
