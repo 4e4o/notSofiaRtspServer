@@ -26,8 +26,7 @@ class EncoderWriteDelegate : public RingDelegate<RtpPacket::Ptr> {
 class NotSofiaMediaSource : public ::RtspMediaSource,
     public hisilicon::mpp::venc::IStreamOut {
   public:
-    NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c,
-                        const string &app, const string &stream_id);
+    NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c);
     ~NotSofiaMediaSource();
 
   private:

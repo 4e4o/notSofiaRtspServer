@@ -2,15 +2,15 @@
 
 #include <HiMPP/VENC/Channel/Channel.h>
 
+#define URL_PATH "stream"
+
 namespace rtsp_server {
 
 using namespace std;
 
-NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c,
-        const string &app,
-        const string &stream_id)
-    : ::RtspMediaSource(DEFAULT_VHOST, app, stream_id),
-      m_channel(c), m_encoder(new H264RtpEncoder(rand(), 1400, 90000, 96, 0)),
+NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c)
+    : ::RtspMediaSource(DEFAULT_VHOST, URL_PATH, to_string(c->id())),
+      m_channel(c), m_encoder(new H264RtpEncoder(rand())),
       m_ring(new RtpRing::RingType()),
       m_delegate(new EncoderWriteDelegate(this)) {
 
@@ -18,8 +18,9 @@ NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c,
     m_ring->setDelegate(m_delegate);
 
     m_h264Frame = FrameImp::create<H264Frame>();
+    m_h264Frame->_prefix_size = 4;
 
-    DebugL << this << " , " << stream_id;
+    DebugL << this << " , " << c->id();
 
     const SIZE_S size = m_channel->imgSize();
     const string dimensions = to_string(size.u32Width) + "," +
@@ -49,9 +50,10 @@ void NotSofiaMediaSource::write(const HI_U8 *data, const HI_U32 &len) {
     m_h264Frame->_pts = getCurrentMillisecond();
     m_h264Frame->_dts = m_h264Frame->_pts;
     m_h264Frame->_buffer.assign(reinterpret_cast<const char *>(data), len);
-    m_h264Frame->_prefix_size = 4;
 
     m_encoder->inputFrame(m_h264Frame);
+
+    // DebugL << this << " , " << getId() << " , " << len;
 }
 
 EncoderWriteDelegate::EncoderWriteDelegate(RtspMediaSource *s)

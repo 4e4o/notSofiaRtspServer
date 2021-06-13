@@ -12,8 +12,6 @@
 
 #include "NotSofiaMediaSource.h"
 
-#define URL_PATH "stream"
-
 namespace rtsp_server {
 
 using namespace std;
@@ -27,9 +25,7 @@ void Application::beforeBoardRun() {
 
     for (auto &group : groups) {
         for (auto &channel : group->channels()) {
-            NotSofiaMediaSource *s = new NotSofiaMediaSource(
-                channel, URL_PATH,
-                std::to_string(channel->id()));
+            NotSofiaMediaSource *s = new NotSofiaMediaSource(channel);
             MediaSource::Ptr ptr(s);
             channel->setStreamOut(s, false);
             m_sources.push_back(ptr);
