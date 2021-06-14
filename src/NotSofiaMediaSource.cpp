@@ -20,8 +20,6 @@ NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c)
     m_h264Frame = FrameImp::create<H264Frame>();
     m_h264Frame->_prefix_size = 4;
 
-    DebugL << this << " , " << c->id();
-
     const SIZE_S size = m_channel->imgSize();
     const string dimensions = to_string(size.u32Width) + "," +
                               to_string(size.u32Height) + "\r\n";
@@ -36,6 +34,8 @@ NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c)
                        "a=rtpmap:96 H264/90000\r\n";
 
     setSdp(sdp);
+
+    DebugL << this << " , " << c->id();
 }
 
 NotSofiaMediaSource::~NotSofiaMediaSource() {
