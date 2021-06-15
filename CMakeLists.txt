@@ -7,14 +7,17 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(ZLMEDIA_KIT_DIR "3rdparty/ZLMediaKit")
+
 add_subdirectory(notSofiaLib)
-add_subdirectory(3rdparty/ZLMediaKit)
+add_subdirectory("${ZLMEDIA_KIT_DIR}")
 
-include_directories(3rdparty/ZLMediaKit/src/)
-include_directories(3rdparty/ZLMediaKit/3rdpart/ZLToolKit/src/)
+file(GLOB SRC_LIST src/*.cpp src/*.h)
+add_executable(${PROJECT_NAME} ${SRC_LIST})
 
-file(GLOB MediaServer_src_list src/*.cpp src/*.h)
-add_executable(${PROJECT_NAME} ${MediaServer_src_list})
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
+    "${ZLMEDIA_KIT_DIR}/src/"
+    "${ZLMEDIA_KIT_DIR}/3rdpart/ZLToolKit/src/")
 
 target_link_libraries(${PROJECT_NAME} notSofiaLib zlmediakit zltoolkit pthread)
 

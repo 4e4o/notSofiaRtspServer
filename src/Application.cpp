@@ -8,12 +8,10 @@ namespace rtsp_server {
 
 using namespace std;
 
-Application::Application() {
+Application::Application(int count, char **argv)
+    : ::Application(count, argv) {
     srand(time(0));
-
-    registerType([]() -> ::boards::ABoard* {
-        return new Board();
-    });
+    registerType<::boards::ABoard, Board>();
 }
 
 int Application::run() {

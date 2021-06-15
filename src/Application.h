@@ -7,7 +7,7 @@ namespace rtsp_server {
 
 class Application : public ::Application {
   public:
-    Application();
+    Application(int count, char **argv);
 
   private:
     int run() override final;
