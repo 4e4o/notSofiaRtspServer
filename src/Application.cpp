@@ -15,11 +15,17 @@ Application::Application(int count, char **argv)
 }
 
 int Application::run() {
+    if (args().size() < 3) {
+        std::cout << "args: [ip] [port]" << std::endl;
+        return 1;
+    }
+
     Logger::Instance().add(std::make_shared<ConsoleChannel>("ConsoleChannel",
                            LogLevel::LDebug));
 
     TcpServer::Ptr rtspSrv(new TcpServer());
-    rtspSrv->start<RtspSession>(554, "10.10.10.11");
+    rtspSrv->start<RtspSession>(std::stoi(std::string(args()[2])),
+                                std::string(args()[1]));
 
     return ::Application::run();
 }
