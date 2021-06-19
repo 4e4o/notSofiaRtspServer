@@ -12,7 +12,7 @@ set(ZLMEDIA_KIT_DIR "3rdparty/ZLMediaKit")
 add_subdirectory(notSofiaLib)
 add_subdirectory("${ZLMEDIA_KIT_DIR}")
 
-file(GLOB SRC_LIST src/*.cpp src/*.h)
+file(GLOB_RECURSE SRC_LIST src/*.cpp src/*.h)
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE
