@@ -12,6 +12,8 @@ class Board : public boards::lm7004v3::Board {
 
   private:
     void setStreamOut(hisilicon::mpp::venc::Channel *) override final;
+    void setMotionEvent(hisilicon::mpp::venc::Channel *,
+                        ::nvp6134::Motion *) override final;
 
     std::vector<MediaSource::Ptr> m_sources;
 };
