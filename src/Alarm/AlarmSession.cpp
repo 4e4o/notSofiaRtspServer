@@ -74,7 +74,7 @@ void AlarmSession::onRecv(const Buffer::Ptr &buf) {
     string line;
     while ((index = _strRecvBuf.find(CMD_SEPARATOR)) != std::string::npos) {
         line = _strRecvBuf.substr(0, index);
-        _strRecvBuf.erase(0, index + 2);
+        _strRecvBuf.erase(0, index + strlen(CMD_SEPARATOR));
         if (!onCommandLine(line)) {
             shutdown(SockException(Err_other, "exit cmd"));
             return;
