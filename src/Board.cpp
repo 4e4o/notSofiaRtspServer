@@ -11,11 +11,11 @@
 
 namespace rtsp_server {
 
-void Board::setMotionEvent(hisilicon::mpp::venc::Channel *c,
+void Board::setMotionEvent(int viChId,
                            ::nvp6134::Motion *m) {
     using namespace ::nvp6134;
-    m->setEvent([c](Motion *) {
-        NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastMotion, c);
+    m->setEvent([viChId](Motion *) {
+        NoticeCenter::Instance().emitEvent(Broadcast::kBroadcastMotion, viChId);
     });
 }
 

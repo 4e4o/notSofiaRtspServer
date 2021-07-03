@@ -10,7 +10,7 @@ class Channel;
 namespace mediakit::Broadcast {
 
 extern const std::string kBroadcastMotion;
-#define BroadcastMotionArgs ::hisilicon::mpp::venc::Channel *channel
+#define BroadcastMotionArgs int viChId
 
 }
 

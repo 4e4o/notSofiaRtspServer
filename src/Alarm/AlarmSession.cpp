@@ -3,8 +3,6 @@
 
 #include <Util/NoticeCenter.h>
 
-#include <HiMPP/VENC/Channel/Channel.h>
-
 #define MAX_BUFFER_SIZE         10 * 1024
 #define SESSION_TIMEOUT_SEC     10
 #define CMD_SEPARATOR           "\n"
@@ -21,7 +19,7 @@ AlarmSession::AlarmSession(const Socket::Ptr &_sock) : TcpSession(_sock) {
     DebugP(this);
 
     auto callback = [this](BroadcastMotionArgs) {
-        this->onMotion(channel->id());
+        this->onMotion(viChId);
     };
 
     NoticeCenter::Instance().addListener(this,
@@ -34,7 +32,7 @@ AlarmSession::~AlarmSession() {
     DebugP(this);
 }
 
-void AlarmSession::onMotion(int chId) {
+void AlarmSession::onMotion(int viChId) {
     weak_ptr<AlarmSession> weakSelf = dynamic_pointer_cast<AlarmSession>
                                       (shared_from_this());
     auto strongSelf =  weakSelf.lock();
@@ -42,12 +40,12 @@ void AlarmSession::onMotion(int chId) {
     if (!strongSelf)
         return;
 
-    strongSelf->async([chId, weakSelf]() {
+    strongSelf->async([viChId, weakSelf]() {
         auto strongSelf =  weakSelf.lock();
         if (!strongSelf)
             return;
 
-        strongSelf->sendMotion(chId);
+        strongSelf->sendMotion(viChId);
     });
 }
 
@@ -55,8 +53,8 @@ void AlarmSession::sendCmd(const string &cmd) {
     SockSender::send(cmd + CMD_SEPARATOR);
 }
 
-void AlarmSession::sendMotion(int id) {
-    sendCmd("MD " + std::to_string(id));
+void AlarmSession::sendMotion(int viChId) {
+    sendCmd("MD " + std::to_string(viChId));
 }
 
 void AlarmSession::onRecv(const Buffer::Ptr &buf) {

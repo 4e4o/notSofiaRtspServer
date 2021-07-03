@@ -1,8 +1,11 @@
 #include "MediaSource.h"
 #include "H264ToRtpConverter.h"
 
+#include "HiMPP/VENC/Group.h"
 #include <HiMPP/VENC/Channel/Channel.h>
 #include <HiMPP/VENC/Channel/H264Attributes.h>
+
+#include <HiMPP/VI/Channel.h>
 
 #define URL_PATH    "stream"
 #define MTU         1400
@@ -11,8 +14,12 @@ namespace rtsp_server {
 
 using namespace std;
 
+static int getViChannelId(hisilicon::mpp::venc::Channel *c) {
+    return hisilicon::mpp::vi::Channel::associatedChannelId(c, c->group());
+}
+
 NotSofiaMediaSource::NotSofiaMediaSource(hisilicon::mpp::venc::Channel *c)
-    : RtspMediaSource(DEFAULT_VHOST, URL_PATH, to_string(c->id())),
+    : RtspMediaSource(DEFAULT_VHOST, URL_PATH, to_string(getViChannelId(c))),
       m_channel(c),
       m_frame(FrameImp::create<H264Frame>()),
       m_track(new H264Track()) {

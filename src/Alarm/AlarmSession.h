@@ -2,6 +2,7 @@
 #define ALARM_SESSION_H_
 
 #include <functional>
+
 #include "Common/config.h"
 #include "Util/TimeTicker.h"
 #include "Network/TcpSession.h"
@@ -21,8 +22,8 @@ class AlarmSession: public TcpSession {
 
   private:
     inline bool onCommandLine(const string &);
-    void onMotion(int id);
-    void sendMotion(int id);
+    void onMotion(int viChId);
+    void sendMotion(int viChId);
     void sendCmd(const string &);
 
     string _strRecvBuf;
